@@ -18,6 +18,7 @@ import com.renan.game.MarioBros;
 import com.renan.game.scenes.Hud;
 import com.renan.game.sprites.Mario;
 import com.renan.game.tools.B2WorldCreator;
+import com.renan.game.tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
     private MarioBros game;
@@ -53,6 +54,8 @@ public class PlayScreen implements Screen {
         new B2WorldCreator(world, map);
 
         player = new Mario(world, this);
+
+        world.setContactListener(new WorldContactListener());
     }
 
     @Override

@@ -5,10 +5,14 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.renan.game.MarioBros;
 
 public class DesktopLauncher {
+
+    private static final int WIDTH = 1500;
+    private static final int HEIGHT = 800;
+
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = MarioBros.V_WIDTH;
-        config.height = MarioBros.V_HEIGHT;
+        config.width = WIDTH;
+        config.height = HEIGHT;
         new LwjglApplication(new MarioBros(), config);
     }
 }

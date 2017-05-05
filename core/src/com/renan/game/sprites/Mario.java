@@ -3,9 +3,11 @@ package com.renan.game.sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -15,6 +17,8 @@ import com.renan.game.screens.PlayScreen;
 
 public class Mario extends Sprite {
 
+    private static final int AJUSTE = 1;
+    public static final String MARIO_HEAD = "head";
     public World world;
     public Body b2body;
     private TextureRegion marioStand;
@@ -39,12 +43,12 @@ public class Mario extends Sprite {
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 1; i <= 3; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
+            frames.add(new TextureRegion(getTexture(), i * 17, 0, 16, 16));
         }
         marioRun = new Animation(0.1f, frames);
         frames.clear();
         for (int i = 4; i <= 5; i++) {
-            frames.add(new TextureRegion(getTexture(), i * 16, 0, 16, 16));
+            frames.add(new TextureRegion(getTexture(), i * 16 + AJUSTE, 0, 16, 16));
         }
         marioJump = new Animation(0.1f, frames);
         defineMario();
@@ -107,8 +111,17 @@ public class Mario extends Sprite {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(6 / MarioBros.PPM);
+        fdef.filter.categoryBits = MarioBros.MARIO_BIT;
+        fdef.filter.maskBits = MarioBros.DEFAULT_BIT | MarioBros.BRICK_BIT | MarioBros.COIN_BIT;
+
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        EdgeShape head = new EdgeShape();
+        head.set(new Vector2(-2 / MarioBros.PPM,6 / MarioBros.PPM),new Vector2(2 / MarioBros.PPM,6 / MarioBros.PPM));
+        fdef.shape = head;
+        fdef.isSensor = true;
+        b2body.createFixture(fdef).setUserData(MARIO_HEAD);
     }
 
 }
